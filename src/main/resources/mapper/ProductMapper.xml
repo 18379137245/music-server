@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD com.exmple.Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.yin.dao.ProductMapper">
+    <resultMap id="result" type="com.example.yin.domain.Product">
+        <result property="product_id" column="product_id"/>
+        <result property="product_ename" column="product_ename"/>
+        <result property="product_cname" column="product_cname"/>
+        <result property="product_quantity" column="product_quantity"/>
+        <result property="borrow_date" column="borrow_date"/>
+        <result property="return_date" column="return_date"/>
+        <result property="product_owner" column="product_owner"/>
+    </resultMap>
+    <!--    查询所有-->
+    <select id="queryAllProduct" resultMap="result">
+        select * from product;
+    </select>
+
+    <!--    //根据Id查询记录-->
+    <select id="queryProductByProduct_Id" resultMap="result">
+        select * from product
+            <where>
+                <if test="product_id != null and product_id != '' ">
+                    product_id=#{product_id}
+                </if>
+            </where>
+
+    </select>
+
+    <select id="queryProductBy" resultMap="result">
+        select *  from product
+        <where>
+            product_owner='dxy'
+            <if test="product_id != null and product_id != '' ">
+                and product_id=#{product_id}
+            </if>
+            <if test="product_cname != null and product_cname != '' ">
+                and product_cname like CONCAT('%',#{product_cname},'%')
+            </if>
+            <if test="product_ename != null and product_ename != '' ">
+                and product_ename like CONCAT('%',#{product_ename},'%')
+            </if>
+            <if test="product_quantity != null and product_quantity != '' ">
+                and product_quantity =  #{product_quantity}
+            </if>
+        </where>
+
+    </select>
+
+    <!--    //添加表数据-->
+    <insert id="insertProduct" parameterType="com.example.yin.domain.Product"
+            keyProperty="product_id" useGeneratedKeys="true">
+        INSERT INTO product (product_id,product_ename,product_cname,product_quantity,borrow_date,return_date,product_owner)
+        VALUES (#{product_id},#{product_ename},#{product_cname},#{product_quantity},#{borrow_date},#{return_date},#{product_owner});
+    </insert>
+
+    <!--    //修改表数据-->
+    <update id="updateProduct" parameterType="com.example.yin.domain.Product">
+        update product set product.product_ename=#{product_ename},product.product_cname=#{product_cname},
+                           product.product_quantity=#{product_quantity},borrow_date=#{borrow_date},
+                           return_date=#{return_date} where product.product_id=#{product_id};
+    </update>
+
+    <!--    //删除表数据-->
+    <delete id="deleteProduct" parameterType="int">
+        delete  from product where product_id =#{product_id}
+    </delete>
+
+    <select id="maxProductId" resultType="int">
+        select max(product.product_id) from product
+    </select>
+
+</mapper>
