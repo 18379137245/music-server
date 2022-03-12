@@ -31,6 +31,7 @@ public class TableTwoServiceImpl implements TableTwoService{
     public List<TableTwo> allList2(String userid)
     {
         System.out.println(userid);
+        System.out.println(userid);
         return tableTwoMapper.allList2(userid);
 
     }
