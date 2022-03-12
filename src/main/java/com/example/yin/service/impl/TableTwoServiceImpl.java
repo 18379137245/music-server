@@ -30,7 +30,9 @@ public class TableTwoServiceImpl implements TableTwoService{
     @Override
     public List<TableTwo> allList2(String userid)
     {
+        System.out.println(userid);
         return tableTwoMapper.allList2(userid);
+
     }
 
     @Override
